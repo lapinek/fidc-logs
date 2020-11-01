@@ -1,19 +1,18 @@
 #!/usr/bin/env node
 
 // Specify the full base URL of the FIDC service.
-const origin = 'https://your-tenant-host.forgeblocks.com'
+const origin = process.env.ORIGIN || 'https://your-tenant-host.forgeblocks.com'
 
 // Specify the log API key and secret,
 // as described in https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#api-key
-const api_key_id = 'your-api-key-id'
-const api_key_secret = 'your-api-key-secret'
+const api_key_id = process.env.API_KEY_ID || 'your-api-key-id'
+const api_key_secret = process.env.API_KEY_SECRET || 'your-api-key-secret'
 
 /* Specify the logs' source, as described in https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#getting_sources
 
 Currently available sources are listed below.
 Uncomment the source you want to use.
-For development and debugging use "am-core" and "idm-core" respectively.
-*/
+For development and debugging use "am-core" and "idm-core" respectively. */
 
 // const source = 'am-access'
 // const source = 'am-activity'
@@ -39,11 +38,11 @@ const source = 'am-core'
 // const source = 'userstore-upgrade'
 
 /**
- * Function declaration.
- * Processes the logs' content: filters, formats, etc.
- * If undefined, a default one is applied that is defined in `tail.js`:
+ * Process the logs' content: filters, formats, etc.
+ * If undefined, a default one is applied defined in ./tail.js:
  * @param {object} logsObject The object containing logs.
  * @param {{payload: string|object}[]} [logsObject.result] An array of logs.
+ * @returns {undefined}
  */
 const showLogs = undefined
 
@@ -52,10 +51,10 @@ const showLogs = undefined
 const tail = require('./tail.js')
 
 tail({
-    origin: origin,
-    api_key_id: api_key_id,
-    api_key_secret: api_key_secret,
-    source: source,
-    frequency: 2,
-    showLogs: showLogs
+  origin: origin,
+  api_key_id: api_key_id,
+  api_key_secret: api_key_secret,
+  source: source,
+  frequency: 2,
+  showLogs: showLogs
 })

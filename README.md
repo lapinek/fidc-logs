@@ -20,16 +20,24 @@ This is illustrated in the examples included in this repo:
 
 See the comments inside the two script templates and in the module for further details.
 
-You will need to provide your own tenant details at the top of the script templates:
+You will need to provide your own tenant details. You can do so via environment variables:
+
+```bash
+export ORIGIN=https://your-tenant-host.forgeblocks.com
+export API_KEY_ID=your-api-key-id
+export API_KEY_SECRET=your-api-key-secret
+```
+
+Alternatively, you can add your tenant specifics at the top of the script templates:
 
 ```javascript
 // Specify the full base URL of the FIDC service.
-const origin = 'https://your-tenant-host.forgeblocks.com'
+const origin = process.env.ORIGIN || 'https://your-tenant-host.forgeblocks.com'
 
 // Specify the log API key and secret,
 // as described in https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#api-key
-const api_key_id = 'your-api-key-id'
-const api_key_secret = 'your-api-key-secret'
+const api_key_id = process.env.API_KEY_ID || 'your-api-key-id'
+const api_key_secret = process.env.API_KEY_SECRET || 'your-api-key-secret'
 ```
 
 With [Node.js](https://nodejs.org/en/download/) installed, and with the `tail.js` module in the same directory, you can run a custom script as follows:

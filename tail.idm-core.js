@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 // Specify the full base URL of the FIDC service.
-const origin = 'https://your-tenant-host.forgeblocks.com'
+const origin = process.env.ORIGIN || 'https://your-tenant-host.forgeblocks.com'
 
 // Specify the log API key and secret,
 // as described in https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#api-key
-const api_key_id = 'your-api-key-id'
-const api_key_secret = 'your-api-key-secret'
+const api_key_id = process.env.API_KEY_ID || 'your-api-key-id'
+const api_key_secret = process.env.API_KEY_SECRET || 'your-api-key-secret'
 
 /* Specify the logs' source, as described in https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#getting_sources
 
@@ -38,39 +38,34 @@ const source = 'idm-core'
 // const source = 'userstore-upgrade'
 
 /**
- * Function declaration.
- * Processes the logs' content: filters, formats, etc.
- * If undefined, a default one is applied defined in `tail.js`:
+ * Process the logs' content: filters, formats, etc.
+ * In this instance, prepare stringified JSON output for a command line tool like `jq`.
+ * If undefined, a default one is applied defined in ./tail.js:
  * @param {object} logsObject The object containing logs.
  * @param {{payload: string|object}[]} [logsObject.result] An array of logs.
+ * @returns {undefined}
  */
-const showLogs =
-    /**
-     * Processes the logs' content: filters, formats, etc.
-     * In this instance, prepares stringified JSON output for a command line tool like `jq`.
-     * @param {object} [logsObject] The object containing logs; expects an array of logs under the "result" key.
-     */
-    function ({
-        logsObject
-    }) {
-        if (Array.isArray(logsObject.result)) {
-            logsObject.result.forEach(log => {
-                console.log(JSON.stringify(log.payload))
-            })
-        } else {
-            console.log(JSON.stringify(logsObject))
-        }
-    }
+const showLogs = function ({
+  logsObject
+}) {
+  if (Array.isArray(logsObject.result)) {
+    logsObject.result.forEach(log => {
+      console.log(JSON.stringify(log.payload))
+    })
+  } else {
+    console.log(JSON.stringify(logsObject))
+  }
+}
 
 // End of user input.
 
 const tail = require('./tail.js')
 
 tail({
-    origin: origin,
-    api_key_id: api_key_id,
-    api_key_secret: api_key_secret,
-    source: source,
-    frequency: undefined,
-    showLogs: showLogs
+  origin: origin,
+  api_key_id: api_key_id,
+  api_key_secret: api_key_secret,
+  source: source,
+  frequency: undefined,
+  showLogs: showLogs
 })
