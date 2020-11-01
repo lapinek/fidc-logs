@@ -1,14 +1,19 @@
 /**
- * Obtains logs from ForgeRock Identity Cloud (FIDC) '/monitoring/logs/tail' endpoint,
+ * @module ./tail.js
+ */
+
+/**
+ * Obtain logs from ForgeRock Identity Cloud (FIDC) '/monitoring/logs/tail' endpoint,
  * as described in https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html
- * Sends the logs data to standard output by default, or to a passed in callback function.
+ * Send the logs data to standard output by default or to a passed in callback function.
  * @param {object} param0 Object wrapping all arguments.
  * @param {string} param0.origin Base URL to an FIDC instance.
  * @param {string} param0.api_key_id For details, see: https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#api-key
  * @param {string} param.api_key_secret For details, see: https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#api-key
- * @param {source} param0.source The logs' source, as described in https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#getting_sources
+ * @param {string} param0.source The logs' source, as described in https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#getting_sources
  * @param {number} [param0.frequency=10] The frequency (in seconds) with which the logs should be requested from the REST endpoint.
- * @param {function} [param0.showLogs=showLogs(logsObject)] A function to output logs.
+ * @param {function} [param0.showLogs=showLogs] Output logs.
+ * @returns {undefined}
  */
 module.exports = function ({
   origin,
@@ -21,11 +26,12 @@ module.exports = function ({
   frequency = frequency || 10
 
   /**
-   * Processes the logs' content: filters, formats, etc.
-   * If no `showLogs` method is passed in arguments, is applied to the data received from the REST endpoint.
+   * Process the logs' content: filters, formats, etc.
+   * if no custom `showLogs` function is passed in arguments.
    * In this instance, prepares stringified JSON output for a command line tool like `jq`.
    * @param {object} logsObject The object containing logs.
    * @param {{payload: string|object}[]} [logsObject.result] An array of logs.
+   * @returns {undefined}
    */
   showLogs = showLogs || function ({
     logsObject
@@ -51,8 +57,9 @@ module.exports = function ({
   }
 
   /**
-   * Obtains logs from the '/monitoring/logs/tail' endpoint.
-   * Keeps track of the last request's `pagedResultsCookie` to avoid overlaps in the delivered content.
+   * Obtain logs from the '/monitoring/logs/tail' endpoint.
+   * Keep track of the last request's `pagedResultsCookie` to avoid overlaps in the delivered content.
+   * @returns {undefined}
    */
   function getLogs() {
     // Authorization options.
@@ -102,13 +109,13 @@ module.exports = function ({
   }
 
   /**
-   * Derives a native module name from the origin; 'http' or 'https' is expected.
+   * Derive a native module name from the origin; 'http' or 'https' is expected.
    */
   const moduleName = (new URL(origin)).protocol.split(':')[0]
   const http = require(moduleName)
 
   /**
-   * Defines URL query string params.
+   * Define URL query string params.
    */
   var params = {
     source: source
