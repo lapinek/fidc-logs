@@ -51,9 +51,9 @@ module.exports = function ({
   function getParams() {
     return Object.keys(params).map((key) => {
       if (params[key]) {
-        return (key + "=" + encodeURIComponent(params[key]))
+        return (key + '=' + encodeURIComponent(params[key]))
       }
-    }).join("&")
+    }).join('&')
   }
 
   /**
@@ -90,7 +90,7 @@ module.exports = function ({
             logsObject = JSON.parse(data)
           } catch (e) {
             logsObject = {
-              "scriptError": String(e)
+              scriptError: String(e)
             }
           }
 
