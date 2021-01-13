@@ -75,6 +75,21 @@ module.exports = function ({
       origin + '/monitoring/logs/tail?' + getParams(),
       options,
       (res) => {
+        /**
+         * Select timeout for the next request based on the request quota limits.
+         * If necessary, delay the next request beyond the selected frequency.
+         * @returns {number}
+         */
+        function getTimeout() {
+          var rateLimitResetTimeout = res.headers['x-ratelimit-reset'] - Date.now() / 1000
+
+          if (!(rateLimitResetTimeout > frequency) || res.headers['x-ratelimit-remaining'] > 0) {
+            return frequency * 1000
+          }
+
+          return rateLimitResetTimeout * 1000
+        }
+
         var data = ''
 
         // To avoid dependencies, use the native module and receive data in chunks.
@@ -101,11 +116,11 @@ module.exports = function ({
           // Set the _pagedResultsCookie query parameter for the next request
           // to retrieve all records stored since the last one.
           params._pagedResultsCookie = logsObject.pagedResultsCookie
+
+          setTimeout(getLogs, getTimeout())
         })
       }
     )
-
-    setTimeout(getLogs, frequency * 1000)
   }
 
   /**
