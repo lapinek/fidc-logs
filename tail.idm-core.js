@@ -40,7 +40,7 @@ const source = 'idm-core'
 /**
  * Process the logs' content: filters, formats, etc.
  * In this instance, prepare stringified JSON output for a command line tool like `jq`.
- * If undefined, a default one is applied defined in ./tail.js:
+ * If undefined, a default function is applied, which is defined in the main module, ./tail.js:
  * @param {object} logsObject The object containing logs.
  * @param {{payload: string|object}[]} [logsObject.result] An array of logs.
  * @returns {undefined}

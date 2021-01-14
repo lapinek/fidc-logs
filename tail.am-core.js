@@ -39,7 +39,7 @@ const source = 'am-core'
 
 /**
  * Process the logs' content: filters, formats, etc.
- * If undefined, a default one is applied defined in ./tail.js:
+ * If undefined, a default function is applied, which is defined in the main module, ./tail.js:
  * @param {object} logsObject The object containing logs.
  * @param {{payload: string|object}[]} [logsObject.result] An array of logs.
  * @returns {undefined}
