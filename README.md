@@ -52,13 +52,13 @@ $ node tail.am-core.js
 
 ## Customizing output
 
-By default, a log object received from the endpoint is parsed, and each log's payload is sent to standard output as stringified JSON by a built in the module function:
+By default, a logs object received from the endpoint is parsed, and each log's payload is sent to standard output as stringified JSON by a built in the module function:
 
 ```javascript
 /**
 * Process the logs' content: filters, formats, etc.
 * if no custom `showLogs` function is passed in arguments.
-* In this instance, prepares stringified JSON output for a command line tool like `jq`.
+* In this instance, prepares stringified JSON output for a command-line tool like `jq`.
 * @param {object} logsObject The object containing logs.
 * @param {{payload: string|object}[]} [logsObject.result] An array of logs.
 * @returns {undefined}
@@ -117,7 +117,7 @@ A custom version of the output function will allow you to filter and format the 
 
 ***
 
-In addition, or as an alternative, you can use a command line tool for processing the output.
+In addition, or as an alternative, you can use a command-line tool for processing the output.
 
 For example, stringified JSON can be processed with [jq](https://stedolan.github.io/jq/tutorial/). The following command will filter the logs content by presence of the "exception" key, or by checking if the nested "logger" property is populated with a script reference; then, it will limit the presentation to "logger", "message", "timestamp", and "exception" keys:
 

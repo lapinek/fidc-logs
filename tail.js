@@ -28,7 +28,7 @@ module.exports = function ({
   /**
    * Process the logs' content: filters, formats, etc.
    * if no custom `showLogs` function is passed in arguments.
-   * In this instance, prepares stringified JSON output for a command line tool like `jq`.
+   * In this instance, prepares stringified JSON output for a command-line tool like `jq`.
    * @param {object} logsObject The object containing logs.
    * @param {{payload: string|object}[]} [logsObject.result] An array of logs.
    * @returns {undefined}
