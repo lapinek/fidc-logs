@@ -14,6 +14,10 @@
  * @param {number} [param0.frequency=10] The frequency (in seconds) with which the logs should be requested from the REST endpoint.
  * @param {function} [param0.showLogs=showLogs] Output logs.
  * @returns {undefined}
+ *
+ * @author Konstantin Lapine <Konstantin.Lapine@forgerock.com>
+ * @version 0.1.0
+ * @license MIT
  */
 module.exports = function ({
   origin,
@@ -115,7 +119,9 @@ module.exports = function ({
 
           // Set the _pagedResultsCookie query parameter for the next request
           // to retrieve all records stored since the last one.
-          params._pagedResultsCookie = logsObject.pagedResultsCookie
+          if (logsObject.pagedResultsCookie) {
+            params._pagedResultsCookie = logsObject.pagedResultsCookie
+          }
 
           setTimeout(getLogs, getTimeout())
         })
