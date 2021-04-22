@@ -1,10 +1,10 @@
 # ForgeRock Identity Cloud (Identity Cloud) Logs
 
-Node.js code for automated logs retrieval from the Identity Cloud monitoring endpoint, as described in [Identity Cloud Docs > Your Tenant > View Audit Logs](https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html).
+Node.js code for automated logs retrieval from the Identity Cloud monitoring endpoint, as described in [Identity Cloud Docs > Your Tenant > View Audit Logs](https://backstage.forgerock.com/docs/idcloud/latest/tenant-audit-logs.html).
 
 ## How it works
 
-The [tail.js](tail.js) module exports a function which accepts arguments for your tenant, credentials, log source, and output specifics. When called, the function continuously requests the logs with the specified interval from the Identity Cloud [tailing logs endpoint](https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#tailing_logs).
+The [tail.js](tail.js) module exports a function which accepts arguments for your tenant, credentials, log source, and output specifics. When called, the function continuously requests the logs with the specified interval from the Identity Cloud [tailing logs endpoint](https://backstage.forgerock.com/docs/idcloud/latest/tenant-audit-logs.html#tailing_logs).
 
 ## How to make it work
 
@@ -37,7 +37,7 @@ You can also hard code a single tenant details at the top of the script template
 const origin = process.env.ORIGIN || 'https://your-tenant-host.forgeblocks.com'
 
 // Specify the log API key and secret,
-// as described in https://backstage.forgerock.com/docs/idcloud/latest/paas/tenant/audit-logs.html#api-key
+// as described in https://backstage.forgerock.com/docs/idcloud/latest/tenant-audit-logs.html#api-key
 const api_key_id = process.env.API_KEY_ID || 'your-api-key-id'
 const api_key_secret = process.env.API_KEY_SECRET || 'your-api-key-secret'
 ```
