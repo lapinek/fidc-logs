@@ -122,5 +122,5 @@ In addition, or as an alternative, you can use a command-line tool for processin
 For example, stringified JSON can be processed with [jq](https://stedolan.github.io/jq/tutorial/). The following command will filter the logs content by presence of the "exception" key, or by checking if the nested "logger" property is populated with a script reference; then, it will limit the presentation to "logger", "message", "timestamp", and "exception" keys:
 
 ```bash
-$ node tail.am-core.js | jq '. | select(objects) | select(has("exception") or (.logger | test("scripts."))) | {logger: .logger, message: .message, timestamp: .timestamp, exception: .exception}'
+$ ./tail.am-core.js. | jq '. | select(objects) | select(has("exception") or (has("logger") and (.logger | test("scripts.")))) | {logger: .logger, message: .message, timestamp: .timestamp, exception: .exception}'
 ```
