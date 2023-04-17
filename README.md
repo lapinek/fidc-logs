@@ -2,9 +2,19 @@
 
 Node.js code for automated logs retrieval from the Identity Cloud monitoring endpoint, as described in [Identity Cloud Docs > Your Tenant > View Audit Logs](https://backstage.forgerock.com/docs/idcloud/latest/tenant-audit-logs.html).
 
+Currently, only the [Tail logs](https://backstage.forgerock.com/docs/idcloud/latest/tenants/audit-debug-logs.html#tail_logs) endpoint is utilized. An unfiltered request to the `/monitoring/logs/tail` endpoint will return a limited amount of logs, similar to a `tail -c 20000 <file-name>` command.
+
+This means that depending on the logs content:
+
+* The response will contain data going back in history from a few to several seconds.
+* If you separate your requests by more than a few seconds, the log data might contain gaps.
+* If you make frequent requests and don't supply `pagedResultsCookie` in consequent requests, you will get duplicates.
+
+This makes the `/monitoring/logs/tail` endpoint a useful debugging resource, but not necessarily a reliable one if you need to collect consistent audit and debug logs exposed by an Identity Cloud tenant.
+
 ## How it works
 
-The [tail.js](tail.js) module exports a function which accepts arguments for your tenant, credentials, log source, and output specifics. When called, the function continuously requests the logs with the specified interval from the Identity Cloud [tailing logs endpoint](https://backstage.forgerock.com/docs/idcloud/latest/tenant-audit-logs.html#tailing_logs).
+The [tail.js](tail.js) module exports a function which accepts arguments for your tenant, credentials, log source, frequency of requests, and output specifics. When called, the function continuously requests the logs with the specified interval from the Identity Cloud [tailing logs endpoint](https://backstage.forgerock.com/docs/idcloud/latest/tenant-audit-logs.html#tailing_logs). If the requests are frequent enough to produce overlapping results, duplicates are avoided by supplying `pagedResultsCookie` received from the previous request. If the requests are too frequent and exceed the quota limits, the next request is automatically delayed beyond the specified frequency.
 
 ## How to make it work
 
